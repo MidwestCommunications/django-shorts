@@ -1,0 +1,9 @@
+<form id="shorts" method="POST" action="shorten/">
+    {% csrf_token %}
+    <input type="text" name="url" method="POST" />
+    <input type="submit" name="submit" value="Shorten URL" /> 
+</form>
+
+{% if shortened_url %}
+    { shortened_url }
+{% endif %}
