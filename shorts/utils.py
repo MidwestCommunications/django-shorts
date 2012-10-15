@@ -6,7 +6,7 @@ from shorts.models import ShortURL
 
 
 def shorten_url(site, url):
-    bitly = bitly_api.Connection('username', 'api_key')
+    bitly = bitly_api.Connection('midwestcommunications', 'R_8cf0d869efb892d4f8bbfe3601fa84c2')
     bitly_url = bitly.shorten(url)
 
     if not ShortURL.objects.filter(shortened_url=bitly_url['url']):
@@ -16,7 +16,7 @@ def shorten_url(site, url):
     return
 
 def expand_url(site, url):
-    bitly = bitly_api.Connection('username', 'api_key')
+    bitly = bitly_api.Connection('midwestcommunications', 'R_8cf0d869efb892d4f8bbfe3601fa84c2')
     bitly_url = bitly.expand(shortUrl=url)
 
     original_url = bitly_url[0]['long_url']
