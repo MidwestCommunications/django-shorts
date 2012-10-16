@@ -12,21 +12,21 @@ class Migration(SchemaMigration):
         db.create_table('shorts_shorturl', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('shortened_url', self.gf('django.db.models.fields.TextField')(default='[{"original_url": "", "shortened_url": ""}]')),
+            ('original_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
+            ('shortened_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
         ))
         db.send_create_signal('shorts', ['ShortURL'])
-
 
     def backwards(self, orm):
         # Deleting model 'ShortURL'
         db.delete_table('shorts_shorturl')
 
-
     models = {
         'shorts.shorturl': {
             'Meta': {'object_name': 'ShortURL'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'shortened_url': ('django.db.models.fields.TextField', [], {'default': '\'[{"original_url": "", "shortened_url": ""}]\''}),
+            'original_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
+            'shortened_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"})
         },
         'sites.site': {
