@@ -9,14 +9,20 @@ from shorts.models import ShortURL
 
 def findURL(text):
     #Run the text through a regex to find all urls.
-    urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
+    urls = re.compile(r"""(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>\[\]]+|\(([^\s()<>\[\]]+|(\([^\s()<>\[\]]+\)))*\))+(?:\(([^\s()<>\[\]]+|(\([^\s()<>\[\]]+\)))*\)|[^\s`!(){};:'".,<>?\[\]]))""")
+    matches = []
 
-    #Loop through list of found urls and shorten_url on each.
-    if urls:
-        for url in urls:
-            return shorten_url(Site.objects.get_current(), url).shortened_url
+    def process_matches(m):
+        matches.append(m.group(0))
+        #Loop through list of found urls and shorten_url on each.
+        if matches:
+            for url in matches:
+                return shorten_url(Site.objects.get_current(), url).shortened_url
+        return
 
-    return 
+    new_text = urls.sub(process_matches, text)
+
+    return new_text
 
 def shorten_url(site, url):
     #Connect to bit.ly api and call bit.ly shorten method on passed in url.
